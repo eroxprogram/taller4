@@ -1,8 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
-import re
-
 
 app = Flask(__name__)
 
@@ -19,9 +17,10 @@ mysql = MySQL(app)
 def index_():
     return render_template('index.html')
 
-@app.route('/index.html')
+@app.route('/index.html', methods = ['GET', 'POST'])
 def index():
     return render_template('index.html')
+    
 
 @app.route('/register.html', methods = ['GET', 'POST'])
 def register():
@@ -75,6 +74,111 @@ def dashboard():
             nombre = user[0]
             return render_template('dashboard.html', email=email, nombre=nombre)
     return redirect(url_for('login'))
+
+@app.route('/pacientes.html', methods =['GET', 'POST'])
+def pacientes():
+    if request.method == "POST":
+        nombre = request.form["nombre"]
+        apellidoPa = request.form["apellidoPa"]
+        apellidoMa = request.form["apellidoMa"]
+        edad = request.form["edad"]
+        nac = request.form["nac"]
+        provincia = request.form["provincia"]
+        phone = request.form["phone"]
+        peso = request.form["peso"]
+        mide = request.form["mide"]
+        sangre = request.form["sangre"]
+        curp = request.form["curp"]
+        cursor = mysql.connection.cursor()
+        
+        cursor.execute("SELECT phone FROM pacientes WHERE phone= %s", (phone,))
+        result = cursor.fetchone()
+        if result:
+            flash("Este numero ya esta registrado")
+            return render_template('pacientes.html')
+        
+        cursor.execute("INSERT INTO pacientes (nombre, apellidoPa, apellidoMa, edad, nac, provincia, phone, peso, mide, sangre, curp) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+        (nombre,apellidoPa, apellidoMa, edad, nac, provincia, phone, peso, mide, sangre, curp ))
+        mysql.connection.commit()
+        flash("Paciente Registrado!")
+        return redirect(url_for('crudpacientes'))
+    return render_template('pacientes.html')
+
+@app.route('/crudpacientes.html')
+def crudpacientes():
+    cursor = mysql.connection.cursor()
+    cursor.execute('SELECT * FROM pacientes')
+    data = cursor.fetchall()
+    return render_template('crudpacientes.html', pacientes = data)
+
+@app.route('/delete.html/<id>')
+def delete_paciente(id):
+    cursor = mysql.connection.cursor()
+    cursor.execute('DELETE FROM pacientes WHERE id = {0}'.format(id))
+    mysql.connection.commit()
+    flash("Paciente eliminado!")
+    return redirect(url_for('crudpacientes'))
+
+
+@app.route('/edit.html/<id>')
+def edit_paciente(id):
+    cursor = mysql.connection.cursor()
+    cursor.execute('SELECT * FROM pacientes WHERE id = %s', (id))
+    data = cursor.fetchall()
+    return render_template('editpacientes.html', paciente = data[0])
+
+@app.route('/editpacientes.html/<id>', methods = ['POST'])
+def editpacientes(id):
+  if request.method == 'POST':
+    nombre = request.form["nombre"]
+    apellidoPa = request.form["apellidoPa"]
+    apellidoMa = request.form["apellidoMa"]
+    edad = request.form["edad"]
+    nac = request.form["nac"]
+    provincia = request.form["provincia"]
+    phone = request.form["phone"]
+    peso = request.form["peso"]
+    mide = request.form["mide"]
+    sangre = request.form["sangre"]
+    curp = request.form["curp"]
+    cursor = mysql.connection.cursor()
+    cursor.execute("""
+      UPDATE pacientes
+      SET nombre = %s,
+          apellidoPa = %s,
+          apellidoMa = %s,
+          edad = %s,
+          nac = %s,
+          provincia = %s,
+          phone = %s,
+          peso = %s,
+          mide = %s,
+          sangre = %s,
+          curp = %s
+      WHERE id = %s
+    """, (nombre, apellidoPa, apellidoMa, edad, nac, provincia, phone, peso, mide, sangre, curp, id))
+    mysql.connection.commit()
+    flash("Paciente actualizado!")
+    return redirect(url_for('crudpacientes'))
+  
+
+@app.route('/citas', methods =['GET','POST'])
+def citas():
+    if request.method == "POST":
+        nombre = request.form["nombre"]
+        email = request.form["email"]
+        fecha = request.form["fecha"]
+        telefono = request.form["telefono"]
+        localidad = request.form["localidad"]
+        mensaje = request.form["mensaje"]
+        cursor = mysql.connection.cursor()
+
+        cursor.execute("INSERT INTO citas (nombre, email, fecha, telefono, localidad, mensaje) VALUES (%s, %s, %s, %s, %s, %s)",
+        (nombre, email, fecha, telefono, localidad, mensaje,))
+        mysql.connection.commit()
+        flash("cita registrada!")
+        return redirect(url_for('citas'))
+    return render_template('index.html')
 
 @app.route('/nosotros.html')
 def nosotros():

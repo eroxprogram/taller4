@@ -164,6 +164,29 @@ p {
 
 }
 
+.containerpacientes{
+  margin: auto;
+  width: 90%;
+  max-width: 700px;
+  max-height: 100%;
+  background-color: white;
+  border-radius: 6px;
+  padding: 3em 2.5em;
+  display: grid;
+  gap: 1em;
+  place-items: center;
+  overflow: auto;
+}
+
+.container3{
+  padding: 2%;
+  margin: auto;
+  background-color: white;
+  align-items: center;
+  text-align: center;
+  place-items: center;
+}
+
 .address {
   margin-bottom: 1rem;
   font-style: normal;

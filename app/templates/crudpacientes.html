@@ -39,8 +39,8 @@
 
         <div class="collapse navbar-collapse" id="navbarSupport">
           <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Inicio</a>
+            <li class="nav-item ">
+              <a class="nav-link" href="index.html">Inicio</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="nosotros.html">Sobre Nosotros</a>
@@ -51,8 +51,8 @@
             <li class="nav-item">
               <a class="nav-link" href="https://www.paho.org/es/noticias">Noticias</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Contacto</a>
+            <li class="nav-item active">
+              <a class="nav-link" href="crudpacientes.html">Pacientes</a>
             </li>
             <li class="nav-item">
               
@@ -62,5 +62,63 @@
       </div> <!-- .container -->
     </nav>
   </header>
-  <div class="" >BIENVENIDO</div>
+
+  <a class="btn btn-primary" href="pacientes.html">Agregar Paciente</a>
+
+  {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      {% for message in messages %}
+      <p class="alert alert-primary">{{message}}</p> 
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
+
+  <div class="container2">
+  <table class="table table-striped">
+    <thead>
+        <tr>
+            <td>Id</td>
+            <td>Nombre</td>
+            <td>Apellido Paterno</td>
+            <td>Apellido Materno</td>
+            <td>Edad</td>
+            <td>Fecha Nac.</td>
+            <td>Origen</td>
+            <td>Telefono</td>
+            <td>Peso</td>
+            <td>Estatura</td>
+            <td>Tipo de Sangre</td>
+            <td>CURP</td>
+            <td>Administrar</td>
+            <td>Descargar</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for paciente in pacientes %}
+         <tr>
+            <td>{{ paciente.0}}</td>
+            <td>{{ paciente.1}}</td>
+            <td>{{ paciente.2}}</td>
+            <td>{{ paciente.3}}</td>
+            <td>{{ paciente.4}}</td>
+            <td>{{ paciente.5}}</td>
+            <td>{{ paciente.6}}</td>
+            <td>{{ paciente.7}}</td>
+            <td>{{ paciente.8}}</td>
+            <td>{{ paciente.9}}</td>
+            <td>{{ paciente.10}}</td>
+            <td>{{ paciente.11}}</td>
+            <td>
+                <a class="btn btn-primary" href="/edit.html/{{ paciente.0 }}">Editar</a>
+                <a class="btn btn-primary" href="/delete.html/{{ paciente.0 }}">Eliminar</a>
+            </td>
+            <td>
+
+            </td>
+            
+         </tr> 
+        {% endfor %}  
+    </tbody>
+  </table>
+</div>
 </body>

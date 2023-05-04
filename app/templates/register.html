@@ -12,7 +12,7 @@
       {% with messages = get_flashed_messages() %}
       {% if messages %}
       {% for message in messages %}
-      <p>{{message}}</p> 
+      <p class="alert alert-primary">{{message}}</p> 
       {% endfor %}
       {% endif %}
       {% endwith %}
@@ -43,7 +43,7 @@
       </div>
     </div><hr>
     <div class="col-12 col-sm-6 py-2 wow fadeInRight">
-    <button onclick="location.href='index.html'" class="btn btn-primary">Cancelar</button>
+    <a href="index.html" class="btn btn-primary">Cancelar</a>
     <button class="btn btn-primary" type="submit">Listo</button>
   </div>
     </div>

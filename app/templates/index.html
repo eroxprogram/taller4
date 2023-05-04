@@ -52,7 +52,7 @@
               <a class="nav-link" href="https://www.paho.org/es/noticias">Noticias</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Contacto</a>
+              <a class="nav-link" href="crudpacientes.html">Pacientes</a>
             </li>
             <li class="nav-item">
               <a class="btn btn-primary" href="register.html">Inicia Sesion / Registrate</a>
@@ -272,32 +272,47 @@
     <div class="container">
       <a name="agencita">
       <h1 class="text-center wow fadeInUp">Agenda una cita</h1>
+      
+      <div class="container3">
+      <form name="search" method="POST" action="">
+        <input type="search" name="search" class="col-12 col-sm-6 py-2 wow fadeInLeft" placeholder="Buscar paciente...">
+        <button type="submit" class="btn btn-primary">Buscar</button>
+      </form>
+    </div>
 
-      <form class="main-form">
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      {% for message in messages %}
+      <p class="alert alert-primary">{{message}}</p> 
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
+
+      <form action="/citas" method="post">
         <div class="row mt-5 ">
           <div class="col-12 col-sm-6 py-2 wow fadeInLeft">
-            <input type="text" class="form-control" placeholder="Nombre completo">
+            <div class="text-primary">Nombre completo:</div>
+            <input type="text" class="form-control" placeholder="Escribe tu nombre completo" name="nombre">
           </div>
           <div class="col-12 col-sm-6 py-2 wow fadeInRight">
-            <input type="text" class="form-control" placeholder="Direccion de correo electronico..">
+            <div class="text-primary">Correo electronico:</div>
+            <input type="text" class="form-control" placeholder="Escribe tu correo electronico" name="email">
           </div>
-          <div class="col-12 col-sm-6 py-2 wow fadeInLeft" data-wow-delay="300ms">
-            <input type="date" class="form-control">
+          <div class="col-12 wow fadeInRight" data-wow-delay="300ms">
+            <div class="text-primary">Fecha y hora de consulta:</div>
+            <input type="datetime-local" class="form-control" name="fecha">
           </div>
-          <div class="col-12 col-sm-6 py-2 wow fadeInRight" data-wow-delay="300ms">
-            <select name="departement" id="departement" class="custom-select">
-              <option value="general">Salud General</option>
-              <option value="cardiology">Cardiologia</option>
-              <option value="dental">Dental</option>
-              <option value="neurology">Neurologia</option>
-              <option value="orthopaedics">Ortopaedia</option>
-            </select>
+          <div class="col-12 col-sm-6 py-2 wow fadeInRight">
+            <div class="text-primary">Numero telefonico:</div>
+            <input type="text" name="telefono" class="form-control" placeholder="Digita tu numero telefonico">
           </div>
-          <div class="col-12 py-2 wow fadeInUp" data-wow-delay="300ms">
-            <input type="text" class="form-control" placeholder="Numero..">
+          <div class="col-12 col-sm-6 py-2 wow fadeInRight">
+            <div class="text-primary">Localidad:</div>
+            <input type="text" name="localidad" class="form-control" placeholder="Localidad donde perteneces..">
           </div>
           <div class="col-12 py-2 wow fadeInUp" data-wow-delay="300ms">
-            <textarea name="message" id="message" class="form-control" rows="6" placeholder="Ingrese el mensaje.."></textarea>
+            <div class="text-primary">Mensaje:</div>
+            <input name="mensaje" id="mensaje" class="form-control" rows="6" placeholder="Pequeña reseña de tu salud actual...">
           </div>
         </div>
 
